@@ -1,0 +1,19 @@
+{
+  "name": "mfiyalka/telegram-passport",
+  "description": "Library for Telegram Passport",
+  "type": "library",
+  "require": {
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "mfiyalka",
+      "email": "mfiyalka@gmail.com"
+    }
+  ],
+  "autoload" : {
+    "psr-4": {
+      "Mfiyalka\\TelegramPassport\\" : "src"
+    }
+  }
+}
