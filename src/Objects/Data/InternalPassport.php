@@ -18,11 +18,20 @@ use Mfiyalka\TelegramPassport\PassportDecrypt;
 class InternalPassport extends BaseObject
 {
     private $credentials;
+    private $decrypt;
+    private $type = 'internal_passport';
 
+    /**
+     * InternalPassport constructor.
+     * @param $data
+     * @param array $credentials
+     * @throws \Exception
+     */
     public function __construct($data, array $credentials)
     {
         parent::__construct($data);
         $this->credentials = $credentials;
+        $this->decrypt = new PassportDecrypt($this->credentials);
     }
 
     /**
@@ -42,7 +51,31 @@ class InternalPassport extends BaseObject
     public function idDocumentData()
     {
         $decrypt = new PassportDecrypt($this->credentials);
-        $data = $decrypt->decrypt('internal_passport', $this->data);
+        $data = $decrypt->decrypt($this->type, $this->data);
         return new IdDocumentData($data);
+    }
+
+    /**
+     * @param string $toURL
+     * @return string
+     * @throws \Telegram\Bot\Exceptions\TelegramSDKException
+     */
+    public function getFrontSide(string $toURL)
+    {
+        $file_data = $this->frontSide;
+        $file_local_path = $this->decrypt->decryptFile($file_data, $this->type, 'front_side', $toURL);
+        return $file_local_path;
+    }
+
+    /**
+     * @param string $toURL
+     * @return string
+     * @throws \Telegram\Bot\Exceptions\TelegramSDKException
+     */
+    public function getSelfie(string $toURL)
+    {
+        $file_data = $this->selfie;
+        $file_local_path = $this->decrypt->decryptFile($file_data, $this->type, 'selfie', $toURL);
+        return $file_local_path;
     }
 }

@@ -43,45 +43,51 @@ class TelegramPassport extends BaseObject
      */
     public function getPersonalDetails()
     {
-        $data = $this->getItem('personal_details');
-        $data = $this->decrypt('personal_details', $data['data']);
-        return $data ? new PersonalDetails($data) : false;
+        if ($data = $this->getItem('personal_details')) {
+            $data = $this->decrypt('personal_details', $data['data']);
+            return $data ? new PersonalDetails($data) : false;
+        }
+        return false;
     }
 
     /**
-     * @return \Mfiyalka\TelegramPassport\Objects\Data\Passport|bool
+     * @return Passport|TelegramPassport
+     * @throws \Exception
      */
     public function getPassport()
     {
         $data = $this->getItem('passport');
-        return $data ? new Passport($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new Passport($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return \Mfiyalka\TelegramPassport\Objects\Data\InternalPassport|bool
+     * @return InternalPassport|TelegramPassport
+     * @throws \Exception
      */
     public function getInternalPassport()
     {
         $data = $this->getItem('internal_passport');
-        return $data ? new InternalPassport($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new InternalPassport($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return DriverLicense|bool
+     * @return DriverLicense|TelegramPassport
+     * @throws \Exception
      */
     public function getDriveLicense()
     {
         $data = $this->getItem('driver_license');
-        return $data ? new DriverLicense($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new DriverLicense($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return IdentityCard|bool
+     * @return IdentityCard|TelegramPassport
+     * @throws \Exception
      */
     public function getIdentityCard()
     {
         $data = $this->getItem('identity_card');
-        return $data ? new IdentityCard($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new IdentityCard($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
@@ -90,54 +96,61 @@ class TelegramPassport extends BaseObject
      */
     public function getAddress()
     {
-        $data = $this->getItem('address');
-        $data = $this->decrypt('address', $data['data']);
-        return $data ? new ResidentialAddress($data) : false;
+        if ($data = $this->getItem('address')) {
+            $data = $this->decrypt('address', $data['data']);
+            return $data ? new ResidentialAddress($data) : false;
+        }
+        return false;
     }
 
     /**
      * @return bool|UtilityBill
+     * @throws \Exception
      */
     public function getUtilityBill()
     {
         $data = $this->getItem('utility_bill');
-        return $data ? new UtilityBill($data) : false;
+        return $data ? new UtilityBill($data, ['credentials' => $this->getCredentials()]) : false;
     }
 
     /**
      * @return bool|BankStatement
+     * @throws \Exception
      */
     public function getBankStatement()
     {
         $data = $this->getItem('bank_statement');
-        return $data ? new BankStatement($data) : false;
+        return $data ? new BankStatement($data, ['credentials' => $this->getCredentials()]) : false;
     }
 
     /**
      * @return bool|RentalAgreement
+     * @throws \Exception
      */
     public function getRentalAgreement()
     {
         $data = $this->getItem('rental_agreement');
-        return $data ? new RentalAgreement($data) : false;
+        return $data ? new RentalAgreement($data, ['credentials' => $this->getCredentials()]) : false;
     }
 
     /**
      * @return bool|PassportRegistration
+     * @throws \Exception
      */
     public function getPassportRegistration()
     {
         $data = $this->getItem('passport_registration');
-        return $data ? new PassportRegistration($data) : false;
+        return $data ? new PassportRegistration($data, ['credentials' => $this->getCredentials()]) : false;
     }
 
     /**
      * @return bool|TemporaryRegistration
+     * @throws \Exception
      */
     public function getTemporaryRegistration()
     {
         $data = $this->getItem('temporary_registration');
-        return $data ? new TemporaryRegistration($data) : false;
+        return $data ? new TemporaryRegistration($data, ['credentials' => $this->getCredentials()]) : false;
     }
 
     /**
@@ -156,6 +169,16 @@ class TelegramPassport extends BaseObject
     {
         $data = $this->getItem('email');
         return $data ? new Email($data) : false;
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getPayload()
+    {
+        $decrypt = new PassportDecrypt(['credentials' => $this->getCredentials()]);
+        return $decrypt->getPayload();
     }
 
     /**
