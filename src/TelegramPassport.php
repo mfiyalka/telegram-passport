@@ -104,53 +104,53 @@ class TelegramPassport extends BaseObject
     }
 
     /**
-     * @return bool|UtilityBill
+     * @return UtilityBill|TelegramPassport
      * @throws \Exception
      */
     public function getUtilityBill()
     {
         $data = $this->getItem('utility_bill');
-        return $data ? new UtilityBill($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new UtilityBill($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return bool|BankStatement
+     * @return BankStatement|TelegramPassport
      * @throws \Exception
      */
     public function getBankStatement()
     {
         $data = $this->getItem('bank_statement');
-        return $data ? new BankStatement($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new BankStatement($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return bool|RentalAgreement
+     * @return RentalAgreement|TelegramPassport
      * @throws \Exception
      */
     public function getRentalAgreement()
     {
         $data = $this->getItem('rental_agreement');
-        return $data ? new RentalAgreement($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new RentalAgreement($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return bool|PassportRegistration
+     * @return PassportRegistration|TelegramPassport
      * @throws \Exception
      */
     public function getPassportRegistration()
     {
         $data = $this->getItem('passport_registration');
-        return $data ? new PassportRegistration($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new PassportRegistration($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
-     * @return bool|TemporaryRegistration
+     * @return TemporaryRegistration|TelegramPassport
      * @throws \Exception
      */
     public function getTemporaryRegistration()
     {
         $data = $this->getItem('temporary_registration');
-        return $data ? new TemporaryRegistration($data, ['credentials' => $this->getCredentials()]) : false;
+        return $data ? new TemporaryRegistration($data, ['credentials' => $this->getCredentials()]) : $this;
     }
 
     /**
